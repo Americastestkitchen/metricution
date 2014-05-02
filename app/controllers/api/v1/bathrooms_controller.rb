@@ -6,8 +6,8 @@ module Api
         @bathrooms = Bathroom.all
 
         respond_to do |format|
-          format.json { render json: @bathrooms.to_json }
-          format.xml  { render xml: @bathrooms.to_xml }
+          format.json { render json: @bathrooms, root: false }
+          format.xml  { render xml: @bathrooms }
         end
       end
 
@@ -15,8 +15,8 @@ module Api
         @bathroom = Bathroom.find(params[:id])
 
         respond_to do |format|
-          format.json { render json: @bathroom.to_json }
-          format.xml  { render xml: @bathroom.to_xml }
+          format.json { render json: @bathroom }
+          format.xml  { render xml: @bathroom }
         end
       end
 
