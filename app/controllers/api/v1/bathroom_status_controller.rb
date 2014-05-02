@@ -1,6 +1,6 @@
 module Api
   module V1
-    class BathroomStatusController < ApplicationController
+    class BathroomStatusController < BackendController
 
       def index
         respond_to do |format|

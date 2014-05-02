@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140427180929) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "bathrooms", force: true do |t|
     t.string   "sparkcore_id"
     t.datetime "created_at"
