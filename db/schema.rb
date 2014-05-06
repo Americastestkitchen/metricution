@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20140427180929) do
 
   create_table "bathrooms", force: true do |t|
     t.string   "name"
+    t.string   "status"
     t.string   "sparkcore_id"
     t.datetime "created_at"
     t.datetime "updated_at"

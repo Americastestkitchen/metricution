@@ -11,6 +11,10 @@ $ ->
 
   $.get '/api/v1/bathrooms', (bathrooms) ->
     $.each bathrooms, (_, bathroom) ->
+
+      statuses = $('.bathroom-statuses')
+      statuses.append("<li id='#{bathroom.sparkcore_id}' class='#{bathroom.status}'>#{bathroom.name}</li>")
+
       es = new EventSource("https://api.spark.io/v1/devices/#{bathroom.sparkcore_id}/events/door/?access_token=#{access_token}")
       es.addEventListener 'door', (event) ->
         message = $.parseJSON(event.data)
@@ -25,13 +29,9 @@ $ ->
           else
             status_text = "unknown"
 
-          statuses = $('.bathroom-statuses')
-          status = statuses.find("##{bathroom.sparkcore_id}")
-          if status.length == 0
-            statuses.append("<li id='#{bathroom.sparkcore_id}' class='#{status_text}'>#{bathroom.name}</li>")
-          else
-            status.removeClass()
-            status.addClass(status_text)
+          status = $(".bathroom-statuses ##{bathroom.sparkcore_id}")
+          status.removeClass()
+          status.addClass(status_text)
 
         # If they don't match for some reason remove the element because
         # who knows what's going on.
