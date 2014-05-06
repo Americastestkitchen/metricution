@@ -8,5 +8,6 @@ Bundler.require(*Rails.groups)
 
 module Dashboard
   class Application < Rails::Application
+    require 'metricution'
   end
 end
