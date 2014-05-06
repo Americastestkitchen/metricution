@@ -41,7 +41,7 @@ The Rails side of this application is broken into two parts. The frontend, and t
 
 #### Backend
 
-The first thing you'll notice is there are a lot of folders missing in `app/`. There are no views, helpers, or assets. This is because the __whole__ frontend lives in the `ember/` folder. This makes the separation very clear at the filesystem level.
+The first thing you'll notice is there are a lot of folders missing in `app/`. There are no views, helpers, or assets. This is because the __whole__ frontend lives in the `client/` folder. This makes the separation very clear at the filesystem level.
 
 #### Frontend
 

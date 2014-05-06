@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'frontend#ember'
+  root 'frontend#client'
 
   namespace :api do
     namespace :v1 do
