@@ -33,7 +33,7 @@ module Api
         response.headers['Content-Type'] = 'text/event-stream'
 
         begin
-          response.stream.write { foo: 'bar' }
+          response.stream.write(foo: 'bar')
         ensure
           response.stream.close
         end
