@@ -29,6 +29,16 @@ module Api
         end
       end
 
+      def events
+        response.headers['Content-Type'] = 'text/event-stream'
+
+        begin
+          response.stream.write { foo: 'bar' }
+        ensure
+          response.stream.close
+        end
+      end
+
     end
   end
 end
