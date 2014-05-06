@@ -20,7 +20,7 @@ task monitor_bathroom: :environment do
     # Find and update the core in the database.
     bathroom = Bathroom.find_by_sparkcore_id(json['coreid'])
     status   = json['data'] == 'opened' ? 'available' : 'occupied'
-    bathroom.update_attribute(:status, status)
+    bathroom.update_attribute(:status, status) if bathroom
 
     # Log this event.
     puts json
