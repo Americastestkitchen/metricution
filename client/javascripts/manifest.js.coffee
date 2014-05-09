@@ -1,3 +1,7 @@
+# TODO: Delete this file, it's left here for reference. It's
+# not even loaded.
+#
+
 #= require jquery
 #= require jquery_ujs
 #= require_tree .
