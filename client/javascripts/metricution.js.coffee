@@ -1,3 +1,4 @@
+#= require_self
 #= require ./store
 #= require_tree ./models
 #= require_tree ./controllers
@@ -5,7 +6,6 @@
 #= require_tree ./templates
 #= require_tree ./routes
 #= require ./router
-#= require_self
 
 # for more details see: http://emberjs.com/guides/application/
 window.Metricution = Ember.Application.create()
