@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  root 'frontend#client'
-
   namespace :api do
     namespace :v1 do
 
@@ -13,5 +11,8 @@ Rails.application.routes.draw do
 
     end
   end
+
+  root to:        'frontend#client'
+  get  '*path' => 'frontend#client'
 
 end
