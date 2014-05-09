@@ -1,22 +1,8 @@
 //= require_tree .
 //= require_self
 
-.bathroom-statuses {
-  list-style: none;
-  padding: 0;
-
-  li {
-    color: #fff;
-    display: inline-block;
-    font: 18px sans-serif;
-    padding: 10px;
-
-    &.available {
-      background-color: #5cb85c;
-    }
-
-    &.occupied {
-      background-color: #d2322d;
-    }
-  }
+.bathroom {
+  background-color: #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
 }

@@ -1,2 +1,1 @@
-Metricution.BathroomsController = Ember.ArrayController.extend({
-})
+Metricution.BathroomsController = Ember.ArrayController.extend({})
