@@ -1,6 +1,4 @@
-# Metricution Namespace.
-App = window.Metricution ||= {}
-
-class App.Bathroom
-  @foo = ->
-    alert('hit')
+Metricution.Bathroom = DS.Model.extend({
+  name: DS.attr('string')
+  sparkcoreId: DS.attr('string')
+})
