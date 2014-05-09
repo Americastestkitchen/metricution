@@ -3,8 +3,9 @@
 #= require ember
 #= require ember-data
 #= require_self
-#= require store
+#= require adapter
 #= require router
+#= require store
 #= require_tree ./controllers
 #= require_tree ./models
 #= require_tree ./routes
