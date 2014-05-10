@@ -1,40 +1,39 @@
 module Api
   module V1
     class BathroomsController < BackendController
-      respond_to :json
 
       def index
         @bathrooms = Bathroom.all
-        render json: @bathrooms, each_serializer: BathroomSerializer
+        render @bathrooms, each_serializer: BathroomSerializer
       end
 
       def create
         @bathroom = Bathroom.new(bathroom_params)
         if @bathroom.save
-          render json: @bathroom
+          render @bathroom
         else
-          render json: @bathroom.errors
+          render @bathroom.errors
         end
       end
 
       def show
         @bathroom = Bathroom.find(params[:id])
-        render json: @bathroom
+        render @bathroom
       end
 
       def update
         @bathroom = Bathroom.find(params[:id])
         if @bathroom.update_attributes(bathroom_params)
-          render json: @bathroom
+          render @bathroom
         else
-          render json: @bathroom.errors
+          render @bathroom.errors
         end
       end
 
       def destroy
         @bathroom = Bathroom.find(params[:id])
         @bathroom.destroy
-        render json: @bathroom
+        render @bathroom
       end
 
       protected
