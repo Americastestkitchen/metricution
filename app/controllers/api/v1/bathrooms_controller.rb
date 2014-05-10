@@ -4,58 +4,36 @@ module Api
 
       def index
         @bathrooms = Bathroom.all
-
-        respond_to do |format|
-          format.json { render json: @bathrooms, root: false }
-          format.xml  { render xml: @bathrooms }
-        end
+        render @bathrooms, each_serializer: BathroomSerializer
       end
 
       def create
         @bathroom = Bathroom.new(bathroom_params)
-
-        respond_to do |format|
-          if @bathroom.save
-            format.json { render json: @bathroom }
-            format.xml  { render xml: @bathroom }
-          else
-            format.json { render json: @bathroom.errors }
-            format.xml  { render xml: @bathroom.errors }
-          end
+        if @bathroom.save
+          render @bathroom
+        else
+          render @bathroom.errors
         end
       end
 
       def show
         @bathroom = Bathroom.find(params[:id])
-
-        respond_to do |format|
-          format.json { render json: @bathroom }
-          format.xml  { render xml: @bathroom }
-        end
+        render @bathroom
       end
 
       def update
         @bathroom = Bathroom.find(params[:id])
-
-        respond_to do |format|
-          if @bathroom.update_attributes(bathroom_params)
-            format.json { render json: @bathroom }
-            format.xml  { render xml: @bathroom }
-          else
-            format.json { render json: @bathroom.errors }
-            format.xml  { render xml: @bathroom.errors }
-          end
+        if @bathroom.update_attributes(bathroom_params)
+          render @bathroom
+        else
+          render @bathroom.errors
         end
       end
 
       def destroy
         @bathroom = Bathroom.find(params[:id])
         @bathroom.destroy
-
-        respond_to do |format|
-          format.json { render json: @bathroom }
-          format.xml  { render xml: @bathroom }
-        end
+        render @bathroom
       end
 
       protected

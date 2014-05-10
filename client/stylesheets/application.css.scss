@@ -1,0 +1,14 @@
+//= require_tree .
+//= require_self
+
+.available {
+  background-color: #5cb85c;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.occupied {
+  background-color: #d2322d;
+  margin-bottom: 10px;
+  padding: 10px;
+}

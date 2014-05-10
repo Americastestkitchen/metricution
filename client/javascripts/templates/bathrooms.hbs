@@ -1,0 +1,10 @@
+<h1>Bathrooms</h1>
+
+<button {{action 'refresh'}}>Refresh</button>
+{{#each}}
+  <div {{bind-attr class="status"}}>
+    <p>Bathroom Name: {{name}}</p>
+    <p>Sparkcore ID: {{sparkcoreId}}</p>
+    <p>Status: {{status}}</p>
+  </div>
+{{/each}}
