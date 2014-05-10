@@ -4,36 +4,36 @@ module Api
 
       def index
         @bathrooms = Bathroom.all
-        render @bathrooms, each_serializer: BathroomSerializer
+        render json: @bathrooms, each_serializer: BathroomSerializer
       end
 
       def create
         @bathroom = Bathroom.new(bathroom_params)
         if @bathroom.save
-          render @bathroom
+          render json: @bathroom
         else
-          render @bathroom.errors
+          render json: @bathroom.errors
         end
       end
 
       def show
         @bathroom = Bathroom.find(params[:id])
-        render @bathroom
+        render json: @bathroom
       end
 
       def update
         @bathroom = Bathroom.find(params[:id])
         if @bathroom.update_attributes(bathroom_params)
-          render @bathroom
+          render json: @bathroom
         else
-          render @bathroom.errors
+          render json: @bathroom.errors
         end
       end
 
       def destroy
         @bathroom = Bathroom.find(params[:id])
         @bathroom.destroy
-        render @bathroom
+        render json: @bathroom
       end
 
       protected
