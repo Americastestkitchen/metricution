@@ -3,30 +3,17 @@ require 'net/http'
 module Api
   module V1
     class EventsController < BackendController
-      include ActionController::Live
-
-      before_action do
-        response.headers['Content-Type'] = 'text/event-stream'
-      end
+      include Tubesock::Hijack
 
       def bathrooms
-        sse = Metricution::SSE::Writer.new(response.stream)
-
-        begin
+        hijack do |tubesock|
           Metricution::Redis.subscribe('door') do |handler|
             handler.message do |channel, message|
-              json     = JSON.parse(message)
-              bathroom = Bathroom.find_by_sparkcore_id(json['coreid'])
-              if bathroom
-                status = json['data'] == 'opened' ? 'available' : 'occupied'
-                bathroom.update_attribute(:status, status)
-                payload = BathroomSerializer.new(bathroom).to_json
-                sse.write(payload)
-              end
+              bathroom = Bathroom.find_by_sparkcore_id(message['coreid'])
+              payload = BathroomSerializer.new(bathroom).to_json
+              tubesock.send_data(payload)
             end
           end
-        ensure
-          sse.close
         end
       end
 
