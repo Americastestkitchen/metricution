@@ -1,4 +1,6 @@
 Metricution.BathroomsController = Ember.ArrayController.extend
-  actions:
-    refresh: ->
-      @set('model', @store.find('bathroom'))
+  init: ->
+    url = 'ws://' + window.location.host + '/api/v1/events/bathrooms'
+    socket = new WebSocket(url)
+    socket.onmessage = (event) =>
+      @store.pushPayload('bathroom', JSON.parse(event.data))

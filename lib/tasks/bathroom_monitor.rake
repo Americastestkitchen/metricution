@@ -14,7 +14,7 @@ task monitor_bathroom: :environment do
 
   Thread.new do
     loop do
-      data = {data: (rand > 0.5 ? "opened" : "closed"), sparkcore_id: "sadsda"}
+      data = { 'data' => (rand > 0.5 ? "opened" : "closed"), 'coreid' => "48ff6c065067555024221587" }
       puts data
       update_bathroom(data)
       Metricution::Redis.publish('door', data)
