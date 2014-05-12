@@ -12,18 +12,10 @@ task monitor_bathroom: :environment do
 
   sse = Metricution::SSE::Reader.new(http, req)
 
-  # TODO: Send a event to make the sever send a SSE.
+  # Send an event over Redis.
   sse.subscribe('door') do |data|
-    # Parse the data.
-    json = JSON.parse(data)
-
-    # Find and update the core in the database.
-    bathroom = Bathroom.find_by_sparkcore_id(json['coreid'])
-    status   = json['data'] == 'opened' ? 'available' : 'occupied'
-    bathroom.update_attribute(:status, status) if bathroom
-
-    # Log this event.
-    puts json
+    Metricution::Redis.publish('door', data)
+    puts data
   end
 
   sse.start
