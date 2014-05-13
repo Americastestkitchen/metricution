@@ -12,32 +12,28 @@ task monitor_bathroom: :environment do
 
   sse = Metricution::SSE::Reader.new(http, req)
 
+  # Mock the core updating.
   Thread.new do
     loop do
-      data = { 'data' => (rand > 0.5 ? "opened" : "closed"), 'coreid' => "48ff6c065067555024221587" }
-      puts data
-      update_bathroom(data)
-      Metricution::Redis.publish('door', data)
-      sleep(1)
+      val = rand > 0.5 ? 'opened' : 'closed'
+      json = "{\"data\":\"#{val}\",\"coreid\":\"48ff6c065067555024221587\"}"
+      update_bathroom(json)
+      sleep(2)
     end
   end
 
-  # Send an event over Redis.
-  sse.subscribe('door') do |message|
-    data = JSON.parse(message)
-    puts data
-    update_bathroom(data)
-    Metricution::Redis.publish('door', data)
-  end
-
+  sse.subscribe('door') { |json| update_bathroom(json) }
   sse.start
 end
 
-
-def update_bathroom(data)
+# Update bathroom records based on messages from spark cloud, sending
+# a redis event to pass along to the frontend with the core's ID.
+def update_bathroom(json)
+  data     = JSON.parse(json)
   bathroom = Bathroom.find_by_sparkcore_id(data['coreid'])
   if bathroom
     status = data['data'] == 'opened' ? 'available' : 'occupied'
     bathroom.update_attribute(:status, status)
   end
+  Metricution::Redis.publish('bathroom', data['coreid'])
 end

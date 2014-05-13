@@ -11,10 +11,9 @@ module Api
           end
 
           thread = Thread.new do
-            Metricution::Redis.subscribe('door') do |on|
-              on.message do |channel, message|
-                data = JSON.parse(message)
-                bathroom = Bathroom.find_by_sparkcore_id(data['coreid'])
+            Metricution::Redis.subscribe('bathroom') do |on|
+              on.message do |channel, sparkcore_id|
+                bathroom = Bathroom.find_by_sparkcore_id(sparkcore_id)
                 tubesock.send_data(json(bathroom))
               end
             end
