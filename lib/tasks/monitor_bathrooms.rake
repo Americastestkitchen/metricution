@@ -23,7 +23,7 @@ module Metricution
 end
 
 desc "Monitor the bathroom"
-task monitor_bathroom: :environment do
+task monitor_bathrooms: :environment do
   uri = URI('https://api.spark.io/v1/events/door')
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
