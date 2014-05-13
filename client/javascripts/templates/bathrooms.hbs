@@ -1,9 +1,10 @@
 <h1>Bathrooms</h1>
 
-<button {{action 'refresh'}}>Refresh</button>
-{{#each}}
+<p>{{availableDescription}}</p>
+
+{{#each bathrooms}}
   <div {{bind-attr class="status"}}>
-    <p>Bathroom Name: {{name}}</p>
+    <p>Bathroom Name: {{#if name}}{{name}}{{else}}undefined{{/if}}</p>
     <p>Sparkcore ID: {{sparkcoreId}}</p>
     <p>Status: {{status}}</p>
   </div>
