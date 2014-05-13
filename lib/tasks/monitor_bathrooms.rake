@@ -9,14 +9,10 @@ module Metricution
     # a redis event to pass along to the frontend with the core's ID.
     def update_bathroom(sparkcore_json)
       sparkcore_data = JSON.parse(sparkcore_json)
-      bathroom = Bathroom.find_by_sparkcore_id(sparkcore_data['coreid'])
-      if bathroom
-        status = sparkcore_data['data'] == 'opened' ? 'available' : 'occupied'
-        bathroom.update_attribute(:status, status)
-        @redis.publish('bathroom', Metricution::ActiveRecordSerializer.to_json(bathroom))
-      else
-        puts "Spark Core ID: #{sparkcore_data['coreid']} sending events, but is not in the database."
-      end
+      bathroom = Bathroom.where(sparkcore_id: sparkcore_data['coreid']).first_or_create
+      status = sparkcore_data['data'] == 'opened' ? 'available' : 'occupied'
+      bathroom.update_attribute(:status, status)
+      @redis.publish('bathroom', Metricution::ActiveRecordSerializer.to_json(bathroom))
     end
 
   end
