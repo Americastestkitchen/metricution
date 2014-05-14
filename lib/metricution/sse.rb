@@ -31,15 +31,21 @@ module Metricution
         @callbacks[event] = block
       end
 
-      def start
+      def start(options = {})
         buffer = ""
         @http.request(@request) do |response|
+          if options[:verbose]
+            puts "Connection to #{@request.uri} established."
+            puts "Subscribed to #{@callbacks.keys.join(', ')}."
+          end
+
           response.read_body do |chunk|
             # Check for \n\n at the end of the chunk.
             if chunk[-2..-1] == "\n\n"
               event = Event.new(buffer + chunk[0..-3])
               if @callbacks[event.name]
                 @callbacks[event.name].call(event.data)
+                puts "#{event.name} : #{event.data}" if options[:verbose]
               end
               buffer = ""
               next
