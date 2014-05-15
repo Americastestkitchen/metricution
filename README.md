@@ -15,8 +15,8 @@ This will guide you through getting all the needed components of this applicatio
 These are the requirements to have installed on your system to run this application.
 
 - Ruby 2.1
-- Rails 4.1
 - Postgres 9.2.4+ (not testing on other versions)
+- Redis 2.8.9
 
 ### Ruby Dependencies
 
@@ -24,12 +24,35 @@ As with any other sane modern Ruby project, the dependencies of this project are
 
     bundle install
 
+### Environment Dependencies
+
+In order for the application to connect to the Spark Cloud for events from the bathroom monitor hardware we need to provide an auth token.
+
+    # .env
+    SPARK_AUTH_TOKEN=<TOKEN>
+
 ### Starting the Server
 
 This application uses [Foreman](http://ddollar.github.io/foreman) for managing it's environment and starting things up. This means starting the server is very simple.
 
     foreman start
 
+## Development
+
+In order to help with development you can start the monitor with `foreman run bundle exec bin/monitor mock`. This will send the web app Redis events in the same form as it would if actual bathrooms were being updated. This process will not touch the database.
+
+To start the whole app with mocked data I recomend running the two processes in thier own terminal window.
+
+    # tty1
+    foreman run bundle exec bin/monitor mock
+    # tty2
+    foreman start web
+
+You could start them together
+
+    foreman start web &; foreman run bundle exec bin/monitor mock
+
+but backgrounding things that print to STDOUT is irritating.
 
 ## Project Overview
 
