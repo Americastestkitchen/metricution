@@ -6,6 +6,11 @@
   <div {{bind-attr class="status"}}>
     <p>Bathroom Name: {{#if name}}{{name}}{{else}}undefined{{/if}}</p>
     <p>Sparkcore ID: {{sparkcoreId}}</p>
-    <p>Status: {{status}}</p>
+    <p>
+      Status: {{status}}
+      {{#if statusUpdatedAt}}
+        updated at {{moment statusUpdatedAt 'h:mm:ss a'}}
+      {{/if}}
+    </p>
   </div>
 {{/each}}

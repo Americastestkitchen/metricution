@@ -1,4 +1,5 @@
 #= require jquery
+#= require moment
 #= require handlebars
 #= require ember
 #= require ember-data
@@ -7,6 +8,7 @@
 #= require router
 #= require store
 #= require_tree ./controllers
+#= require_tree ./helpers
 #= require_tree ./models
 #= require_tree ./routes
 #= require_tree ./templates
