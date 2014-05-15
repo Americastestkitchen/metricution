@@ -7,9 +7,9 @@ if ARGV[0] && ARGV[0] == 'mock'
   # This will create 3 new bathrooms, and then start just updating them.
   require 'securerandom'
   bathrooms = []
-  3.times do
+  9.times do
     bathroom = Bathroom.new id: SecureRandom.random_number(1000000),
-                            name: SecureRandom.uuid,
+                            name: SecureRandom.hex(3),
                             sparkcore_id: SecureRandom.hex(12),
                             status: (rand > 0.5 ? 'available' : 'occupied'),
                             status_updated_at: DateTime.now.utc
