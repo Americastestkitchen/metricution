@@ -2,22 +2,47 @@
 require_relative '../config/boot'
 require_relative '../config/environment'
 
-# Setup the connection to the Spark Cloud.
-uri = URI('https://api.spark.io/v1/events/door')
-http = Net::HTTP.new(uri.host, uri.port)
-http.use_ssl = true
-req = Net::HTTP::Get.new(uri)
-req["Authorization"] = "Bearer #{ENV['SPARK_AUTH_TOKEN']}"
-req["Content-Type"]  = "application/json"
+if ARGV[0] && ARGV[0] == 'mock'
+  # Mock actual bathrooms getting created and updated.
+  # This will create 3 new bathrooms, and then start just updating them.
+  require 'securerandom'
+  bathrooms = []
+  3.times do
+    bathroom = Bathroom.new id: SecureRandom.random_number(1000000),
+                            name: SecureRandom.uuid,
+                            sparkcore_id: SecureRandom.hex(12),
+                            status: (rand > 0.5 ? 'available' : 'occupied'),
+                            status_updated_at: DateTime.now.utc
+    bathrooms << bathroom
+  end
 
-# Register callbacks for Server Sent Events.
-sse = Metricution::SSE::Reader.new(http, req)
-sse.subscribe('door') do |message|
-  sparkcore_data = JSON.parse(message)
-  status = sparkcore_data['data'] == 'opened' ? 'available' : 'occupied'
-  bathroom = Bathroom.where(sparkcore_id: sparkcore_data['coreid']).first_or_create(name: "unknown")
-  bathroom.update_attributes(status: status)
+  loop do
+    bathroom = bathrooms.sample
+    bathroom.status = (rand > 0.5 ? 'available' : 'occupied')
+    bathroom.status_updated_at = DateTime.now.utc
+    json = Metricution::ActiveRecordSerializer.to_json(bathroom)
+    puts "MOCKING #{json}"
+    Metricution::Redis.publish('bathroom', json)
+    sleep(1)
+  end
+else
+  # Setup the connection to the Spark Cloud.
+  uri = URI('https://api.spark.io/v1/events/door')
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  req = Net::HTTP::Get.new(uri)
+  req["Authorization"] = "Bearer #{ENV['SPARK_AUTH_TOKEN']}"
+  req["Content-Type"]  = "application/json"
+
+  # Register callbacks for Server Sent Events.
+  sse = Metricution::SSE::Reader.new(http, req)
+  sse.subscribe('door') do |message|
+    sparkcore_data = JSON.parse(message)
+    status = sparkcore_data['data'] == 'opened' ? 'available' : 'occupied'
+    bathroom = Bathroom.where(sparkcore_id: sparkcore_data['coreid']).first_or_create(name: "unknown")
+    bathroom.update_attributes(status: status)
+  end
+
+  # Connect and listen forever.
+  sse.start(verbose: true)
 end
-
-# Connect and listen forever.
-sse.start(verbose: true)
