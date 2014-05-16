@@ -16,6 +16,10 @@ Metricution.BathroomsController = Ember.ArrayController.extend
       "There are #{@.get('availableCount')} available bathrooms."
   ).property('availableCount')
 
+  foo:(->
+    @get('clock.second')
+  ).property('clock.second')
+
   # TODO: Move this into an adatper.
   init: ->
     socket = new WebSocket('ws://' + window.location.host + '/api/v1/events/bathrooms')
