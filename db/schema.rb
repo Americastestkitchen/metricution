@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515020448) do
+ActiveRecord::Schema.define(version: 20140516001823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bathrooms", force: true do |t|
     t.string   "name"
-    t.string   "status"
     t.string   "sparkcore_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "status_updated_at"
+    t.integer  "status",            default: 0, null: false
   end
 
 end
