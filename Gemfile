@@ -14,6 +14,7 @@ gem 'tubesock', '~> 0.2.3'
 gem 'uglifier', '>= 1.3.0'
 
 group :development do
+  gem 'foreman'
   gem 'pry'
   gem 'spring'
 end
