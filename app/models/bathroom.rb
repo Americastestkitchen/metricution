@@ -3,7 +3,6 @@ class Bathroom < ActiveRecord::Base
 
   validates :name, presence: true
   validates :sparkcore_id, presence: true, uniqueness: true
-  validates :status, presence: true, inclusion: { in: %w{occupied available} }
 
   before_save do
     self.status_updated_at = DateTime.now.utc if status_changed?
