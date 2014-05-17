@@ -1,7 +1,11 @@
-#include "application.h"
-
 char *ssid;
-int last_state = -1;
+
+// State
+// 0 = Available
+// 1 = Occupied
+// 2 = Unknown
+int state      = 2;
+int last_state = 2;
 
 void setup() {
   pinMode(D7, OUTPUT);
@@ -9,10 +13,11 @@ void setup() {
 
   ssid = Network.SSID();
   Spark.variable("ssid", ssid, STRING);
+  Spark.variable("state", &state, INT);
 }
 
 void loop() {
-  int state = digitalRead(D0);
+  state = digitalRead(D0);
 
   if (state != last_state) {
     digitalWrite(D7, state);
