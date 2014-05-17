@@ -17,8 +17,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'brakeman'
-  gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'foreman'
   gem 'guard'
   gem 'guard-rspec', require: false
@@ -26,9 +24,16 @@ group :development, :test do
   gem 'guard-brakeman'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'simplecov'
-  gem 'shoulda-matchers'
   gem 'spring'
 end
 
-gem 'sdoc', '~> 0.4.0', group: :doc
+group :test do
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'shoulda-matchers'
+  gem 'simplecov'
+end
+
+group :doc do
+  gem 'sdoc', '~> 0.4.0'
+end
