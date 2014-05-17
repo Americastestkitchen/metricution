@@ -2,10 +2,16 @@
 
 <p class="bathroom-count">{{availableDescription}}</p>
 
-{{#each bathrooms}}
-  <div {{bind-attr class=":bathroom status"}}>
-    <p class="name">{{name}}</p>
-    <p class="status">{{capitalize status}} as of {{moment statusUpdatedAt 'h:mm a'}}</p>
+{{#each bathroom in model}}
+  <div {{bind-attr class=":bathroom bathroom.status"}}>
+    <p class="name">{{bathroom.name}}</p>
+    <p class="status">
+      {{capitalize bathroom.status}}
+      since
+      <time>
+        {{bathroom.statusUpdatedAtRelative}}
+      </time>
+    </p>
   </div>
 {{/each}}
 <div class="cf"></div>

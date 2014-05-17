@@ -3,3 +3,7 @@ Metricution.Bathroom = DS.Model.extend
   sparkcoreId: DS.attr('string')
   status: DS.attr('string')
   statusUpdatedAt: DS.attr('date')
+  statusUpdatedAtRelative:(->
+    moment(@get('statusUpdatedAt')).fromNow()
+  ).property('statusUpdatedAt', 'clock.second')
+
