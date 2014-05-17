@@ -1,33 +1,32 @@
 Metricution.BathroomsController = Ember.ArrayController.extend
 
   bathrooms:(->
-    @.get('model')
+    @get('model')
   ).property('model')
 
   availableCount:(->
-    @.get('bathrooms').filterBy('status', 'available').get('length')
+    @get('bathrooms').filterBy('status', 'available').get('length')
   ).property('bathrooms.@each.status')
 
   availableDescription:(->
-    count = @.get('availableCount')
+    count = @get('availableCount')
     if count == 1
       "There is 1 available bathroom."
     else
-      "There are #{@.get('availableCount')} available bathrooms."
+      "There are #{@get('availableCount')} available bathrooms."
   ).property('availableCount')
 
   # TODO: Move this into an adatper.
   init: ->
-    socket = new WebSocket('ws://' + window.location.host + '/api/v1/events/bathrooms')
+    url = 'ws://' + window.location.host + '/api/v1/events/bathrooms'
+    socket = new WebSocket(url)
     retry_count = 1
-    socket.onopen = (event) =>
-      Ember.Logger.info 'Websocket connected to host.'
+    socket.onopen = (event) ->
       retry_count = 1
     socket.onmessage = (event) =>
-      @.get('store').pushPayload('bathroom', JSON.parse(event.data))
-    socket.onclose = (event) =>
-      id = setTimeout(=>
-        Ember.Logger.warn "Websocket not open. Trying to reconnect (#{retry_count++})."
+      @get('store').pushPayload('bathroom', JSON.parse(event.data))
+    socket.onclose = (event) ->
+      id = setTimeout(->
         # Create a new socket to the host.
         closed_socket    = event.currentTarget
         socket           = new WebSocket(closed_socket.URL)

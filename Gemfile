@@ -25,6 +25,10 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'spring'
+  gem 'rubocop', github: 'bbatsov/rubocop'
+
+  # TODO: Add SCSS linting.
+  # gem 'scss-lint'
 end
 
 group :test do

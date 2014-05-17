@@ -1,4 +1,9 @@
+# Bathroom
+# Represents a state-full bathroom, where it's either
+# occupied, or available. Keeps track of when the state changes.
+#
 class Bathroom < ActiveRecord::Base
+  # TODO: Unknown state.
   enum status: [:occupied, :available]
 
   validates :name, presence: true
@@ -9,6 +14,7 @@ class Bathroom < ActiveRecord::Base
   end
 
   after_save do
-    Metricution::Redis.publish('bathroom', Metricution::ActiveRecordSerializer.to_json(self))
+    json = Metricution::ActiveRecordSerializer.to_json(self)
+    Metricution::Redis.publish('bathroom', json)
   end
 end

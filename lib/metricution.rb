@@ -1,3 +1,4 @@
+# The Metricution namespace.
 module Metricution
 end
 
