@@ -1,8 +1,11 @@
+require 'securerandom'
+
 FactoryGirl.define do
-  sequence(:sparkcore_id) {|n| "12341#{n}"}
 
   factory :bathroom do
     name '4th Floor'
-    sparkcore_id
+    sparkcore_id SecureRandom.hex(12)
+    status :available
   end
+
 end
