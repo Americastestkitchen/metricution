@@ -2,16 +2,15 @@
 
 <p class="bathroom-count">{{availableDescription}}</p>
 
-{{#each bathrooms}}
-  <div {{bind-attr class=":bathroom status"}}>
-    <p class="name">{{name}}</p>
+{{#each bathroom in model}}
+  <div {{bind-attr class=":bathroom bathroom.status"}}>
+    <p class="name">{{bathroom.name}}</p>
     <p class="status">
-      {{capitalize status}}
+      {{capitalize bathroom.status}}
       since
       <time>
-        {{statusUpdatedAtRelative}}
+        {{bathroom.statusUpdatedAtRelative}}
       </time>
-      {{foo}}
     </p>
   </div>
 {{/each}}

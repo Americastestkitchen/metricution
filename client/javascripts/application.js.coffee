@@ -14,6 +14,8 @@
 #= require_tree ./routes
 #= require_tree ./templates
 
+Ember.MODEL_FACTORY_INJECTIONS = true;
+
 window.Metricution = Ember.Application.create
   ready: ->
     @register('clock:second', Metricution.Clock, { singleton: true })

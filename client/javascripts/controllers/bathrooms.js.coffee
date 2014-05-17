@@ -1,24 +1,16 @@
 Metricution.BathroomsController = Ember.ArrayController.extend
 
-  bathrooms:(->
-    @.get('model')
-  ).property('model')
-
   availableCount:(->
-    @.get('bathrooms').filterBy('status', 'available').get('length')
-  ).property('bathrooms.@each.status')
+    @get('model').filterBy('status', 'available').get('length')
+  ).property('model.@each.status')
 
   availableDescription:(->
-    count = @.get('availableCount')
+    count = @get('availableCount')
     if count == 1
       "There is 1 available bathroom."
     else
-      "There are #{@.get('availableCount')} available bathrooms."
+      "There are #{@get('availableCount')} available bathrooms."
   ).property('availableCount')
-
-  foo:(->
-    @get('clock.second')
-  ).property('clock.second')
 
   # TODO: Move this into an adatper.
   init: ->
@@ -28,7 +20,7 @@ Metricution.BathroomsController = Ember.ArrayController.extend
       Ember.Logger.info 'Websocket connected to host.'
       retry_count = 1
     socket.onmessage = (event) =>
-      @.get('store').pushPayload('bathroom', JSON.parse(event.data))
+      @get('store').pushPayload('bathroom', JSON.parse(event.data))
     socket.onclose = (event) =>
       id = setTimeout(=>
         Ember.Logger.warn "Websocket not open. Trying to reconnect (#{retry_count++})."

@@ -4,6 +4,6 @@ Metricution.Bathroom = DS.Model.extend
   status: DS.attr('string')
   statusUpdatedAt: DS.attr('date')
   statusUpdatedAtRelative:(->
-    console.log 'hoi'
-    moment(@.get('statusUpdatedAt')).fromNow()
+    moment(@get('statusUpdatedAt')).fromNow()
   ).property('statusUpdatedAt', 'clock.second')
+
