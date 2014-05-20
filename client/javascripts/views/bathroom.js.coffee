@@ -9,12 +9,8 @@ Metricution.BathroomView = Ember.View.extend
     @resizeFont()
 
   resizeFont:(->
-    @$().bigtext
-      maxfontsize: @$().height()
-
     divHeight = @$().height()
-    pHeights = @$('.name').height() + @$('.status-updated-at').height()
-    if pHeights > divHeight
-      @$('.status-updated-at').hide()
-
+    pHeights  = @$('.name').height() + @$('.status-updated-at').height()
+    @$().bigtext(maxfontsize: divHeight)
+    @$('.status-updated-at').hide() if pHeights > divHeight
   ).observes('context.statusUpdatedAtRelative')
