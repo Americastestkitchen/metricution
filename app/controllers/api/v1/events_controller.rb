@@ -1,25 +1,25 @@
 module Api
   module V1
     class EventsController < BackendController
-      include Tubesock::Hijack
+      include ActionController::Live
+
+      before_action do
+        response.headers['Content-Type'] = 'text/event-stream'
+      end
 
       def bathrooms
-        hijack do |websocket|
-          # TODO: Use one Redis connection. Creating a thread with a full
-          # Redis connection per request is pretty expensive.
-          thread = Thread.new do
-            Redis.new.subscribe('bathroom') do |on|
-              on.message do |channel, message|
-                websocket.send_data(message)
-              end
-            end
-          end
-
-          # Clean up the thread.
-          websocket.onclose do
-            thread.kill
+        response.headers['Content-Type'] = 'text/event-stream'
+        sse = SSE.new(response.stream, retry: 300, event: "bathroom")
+        redis = Redis.new
+        redis.subscribe('bathroom') do |on|
+          on.message do |channel, message|
+            p JSON.parse(message)
+            sse.write(JSON.parse(message))
           end
         end
+      ensure
+        redis.quit
+        sse.close
       end
     end
   end
