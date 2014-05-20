@@ -9,6 +9,6 @@ class Bathroom < ActiveRecord::Base
   end
 
   after_save do
-    Metricution::Redis.publish('bathroom', Metricution::ActiveRecordSerializer.to_json(self))
+    Metricution::Redis.publish('bathroomUpdated', Metricution::ActiveRecordSerializer.to_json(self))
   end
 end

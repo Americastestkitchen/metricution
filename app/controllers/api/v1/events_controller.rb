@@ -8,13 +8,11 @@ module Api
       end
 
       def bathrooms
-        response.headers['Content-Type'] = 'text/event-stream'
-        sse = SSE.new(response.stream, retry: 300, event: "bathroom")
+        sse = SSE.new(response.stream, retry: 300, event: "bathroomUpdated")
         redis = Redis.new
-        redis.subscribe('bathroom') do |on|
+        redis.subscribe('bathroomUpdated') do |on|
           on.message do |channel, message|
-            p JSON.parse(message)
-            sse.write(JSON.parse(message))
+            sse.write(message)
           end
         end
       ensure
