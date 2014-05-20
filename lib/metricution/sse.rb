@@ -69,18 +69,34 @@ module Metricution
       end
     end
 
+    # <3 Rails.
     class Writer
-      def initialize(io)
-        @io = io
-      end
+      WHITELISTED_OPTIONS = %w(retry event id)
 
-      def write(object, options = {})
-        options.each { |k,v| @io.write "#{k}: #{v}\n" }
-        @io.write "data: #{JSON.dump(object)}\n\n"
+      def initialize(stream, options = {})
+        @stream = stream
+        @options = options
       end
 
       def close
-        @io.close
+        @stream.close
+      end
+
+      def write(string, options = {})
+        options = @options.merge(options).stringify_keys
+
+        WHITELISTED_OPTIONS.each do |option|
+          if (value = options[option])
+            @stream.write "#{option}: #{value}\n"
+          end
+        end
+
+        if string
+          string = string.gsub("\n", "\ndata: ")
+          @stream.write("data: #{string}\n\n")
+        end
+      rescue IOError => e  # Client disconnected.
+        @stream.close
       end
     end
 

@@ -1,7 +1,7 @@
 common: &common
   adapter: postgresql
   host: localhost
-  pool: 5
+  pool: 3
 
 development:
   <<: *common

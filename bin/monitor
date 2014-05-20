@@ -3,26 +3,11 @@ require_relative '../config/boot'
 require_relative '../config/environment'
 
 if ARGV[0] && ARGV[0] == 'mock'
-  # Mock actual bathrooms getting created and updated.
-  # This will create 3 new bathrooms, and then start just updating them.
-  require 'securerandom'
-  bathrooms = []
-  9.times do
-    bathroom = Bathroom.new id: SecureRandom.random_number(1000000),
-                            name: SecureRandom.hex(3),
-                            sparkcore_id: SecureRandom.hex(12),
-                            status: (rand > 0.5 ? 'available' : 'occupied'),
-                            status_updated_at: DateTime.now.utc
-    bathrooms << bathroom
-  end
-
+  bathrooms = Bathroom.all
   loop do
     bathroom = bathrooms.sample
-    bathroom.status = (rand > 0.5 ? 'available' : 'occupied')
-    bathroom.status_updated_at = DateTime.now.utc
-    json = Metricution::ActiveRecordSerializer.to_json(bathroom)
-    puts "MOCKING #{json}"
-    Metricution::Redis.publish('bathroom', json)
+    bathroom.update_attributes(status: (rand > 0.5 ? 0 : 1))
+    puts bathroom.inspect
     sleep(1)
   end
 else

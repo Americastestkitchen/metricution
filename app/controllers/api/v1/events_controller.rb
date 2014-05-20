@@ -7,16 +7,26 @@ module Api
         response.headers['Content-Type'] = 'text/event-stream'
       end
 
+      after_action do
+        p "closing"
+        ActiveRecord::Base.connection_pool.release_connection
+      end
+
       def bathrooms
-        sse = SSE.new(response.stream, retry: 300, event: "bathroomUpdated")
-        redis = Redis.new
-        redis.subscribe('bathroomUpdated') do |on|
-          on.message do |channel, message|
-            sse.write(message)
+        sse = Metricution::SSE::Writer.new(response.stream)
+        Metricution::PGEvents.subscribe('bathroom_update') do |event, payload|
+          Bathroom.uncached do
+            bathroom = Bathroom.find(payload)
+            p bathroom
+            json = Metricution::ActiveRecordSerializer.to_json(bathroom)
+            sse.write(json, event: 'bathroomUpdate')
           end
         end
+        Metricution::PGEvents.subscribe('browser_reload') do |a,b|
+          sse.write(nil, event: 'browserReload')
+        end
+        Metricution::PGEvents.start_listening
       ensure
-        redis.quit
         sse.close
       end
     end

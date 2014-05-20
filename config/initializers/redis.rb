@@ -1,1 +1,0 @@
-Metricution::Redis = Redis.new
