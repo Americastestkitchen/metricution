@@ -1,17 +1,5 @@
-<h1>America's Test Kitchen Bathroom Status</h1>
-
-<p class="bathroom-count">{{availableDescription}}</p>
-
-{{#each bathroom in model}}
-  <div {{bind-attr class=":bathroom bathroom.status"}}>
-    <p class="name">{{bathroom.name}}</p>
-    <p class="status">
-      {{capitalize bathroom.status}}
-      since
-      <time>
-        {{bathroom.statusUpdatedAtRelative}}
-      </time>
-    </p>
-  </div>
-{{/each}}
-<div class="cf"></div>
+<div class="bathrooms">
+  {{#each bathroom in model}}
+    {{view Metricution.BathroomView contextBinding="bathroom"}}
+  {{/each}}
+</div>

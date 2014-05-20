@@ -1,17 +1,5 @@
 Metricution.BathroomsController = Ember.ArrayController.extend
 
-  availableCount:(->
-    @get('model').filterBy('status', 'available').get('length')
-  ).property('model.@each.status')
-
-  availableDescription:(->
-    count = @get('availableCount')
-    if count == 1
-      "There is 1 available bathroom."
-    else
-      "There are #{@get('availableCount')} available bathrooms."
-  ).property('availableCount')
-
   # TODO: Move this into an adatper.
   init: ->
     socket = new WebSocket('ws://' + window.location.host + '/api/v1/events/bathrooms')
