@@ -8,7 +8,7 @@ void setup() {
   pinMode(D7, OUTPUT);
   pinMode(D0, INPUT_PULLDOWN);
 
-  char *version = "0.0.3";
+  char *version = "0.0.4";
   Spark.variable("version", version, STRING);
 
   char *ssid = Network.SSID();
@@ -16,6 +16,7 @@ void setup() {
 
   state = digitalRead(D0);
   Spark.variable("state", &state, INT);
+  Spark.publish("door", (state ? "closed" : "opened"), 60, PRIVATE);
 }
 
 void loop() {
