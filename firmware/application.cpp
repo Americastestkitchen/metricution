@@ -1,5 +1,3 @@
-char *ssid;
-
 // State
 // 0 = Available
 // 1 = Occupied
@@ -10,7 +8,10 @@ void setup() {
   pinMode(D7, OUTPUT);
   pinMode(D0, INPUT_PULLDOWN);
 
-  ssid = Network.SSID();
+  char *version = "0.0.3";
+  Spark.variable("version", version, STRING);
+
+  char *ssid = Network.SSID();
   Spark.variable("ssid", ssid, STRING);
 
   state = digitalRead(D0);
