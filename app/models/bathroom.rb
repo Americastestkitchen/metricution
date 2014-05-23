@@ -1,5 +1,5 @@
 class Bathroom < ActiveRecord::Base
-  enum status: [:occupied, :available]
+  enum status: [:available, :occupied, :unknown]
 
   validates :name, presence: true
   validates :sparkcore_id, presence: true, uniqueness: true

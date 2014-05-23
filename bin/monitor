@@ -30,6 +30,29 @@ else
   uri = URI('https://api.spark.io/v1/events/door')
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
+  http.read_timeout = 5
+
+  # Give the websever time to start up, or it'll miss the events
+  # we send.
+  sleep(2)
+
+  Bathroom.all.each do |bathroom|
+    begin
+      uri2 = URI("https://api.spark.io/v1/devices/#{bathroom.sparkcore_id}/state")
+      req = Net::HTTP::Get.new(uri2)
+      req["Authorization"] = "Bearer #{ENV['SPARK_AUTH_TOKEN']}"
+      req["Content-Type"]  = "application/json"
+      res = http.request(req)
+      data = JSON.parse(res.body)
+      bathroom.update_attributes(status: data['result'])
+    rescue
+      bathroom.update_attributes(status: :unknown)
+    ensure
+      puts "Set #{bathroom.name} to #{bathroom.status}."
+    end
+  end
+
+  http.read_timeout = 60
   req = Net::HTTP::Get.new(uri)
   req["Authorization"] = "Bearer #{ENV['SPARK_AUTH_TOKEN']}"
   req["Content-Type"]  = "application/json"
