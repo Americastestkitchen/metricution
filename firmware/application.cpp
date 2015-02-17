@@ -11,7 +11,7 @@ void setup() {
   char *version = "0.0.4";
   Spark.variable("version", version, STRING);
 
-  char *ssid = Network.SSID();
+  char *ssid = WiFi.SSID();
   Spark.variable("ssid", ssid, STRING);
 
   state = digitalRead(D0);
